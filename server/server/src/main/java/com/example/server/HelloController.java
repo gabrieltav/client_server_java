@@ -1,5 +1,6 @@
 package com.example.server;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -77,8 +78,30 @@ public class HelloController implements Initializable {
                 hBox.getChildren().add(textFlow);
                 vbox_messages.getChildren().add(hBox);
 
-                server.sendMessageToCliente(menssageToSend);
+                server.sendMessageToClient(menssageToSend);
+                tf_message.clear();
             }
         });
+    }
+
+    public static void addLabel(String messageFromClient, VBox vbox) {
+        HBox hbox = new HBox();
+        hbox.setAlignment(Pos.CENTER_LEFT);
+        hbox.setPadding(new Insets(5,5,5,10));
+
+        Text text = new Text(messageFromClient);
+        TextFlow textFlow = new TextFlow(text);
+        textFlow.setStyle("-fx-background-color: rgb(15,125,242)" +
+                "-fx-background-radius: 20px");
+        textFlow.setPadding(new Insets(5,10,5,10));
+        hbox.getChildren().add(textFlow);
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                vbox.getChildren().add(hbox);
+            }
+        });
+
     }
 }
